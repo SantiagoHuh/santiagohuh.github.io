@@ -941,7 +941,7 @@
                     <p class="alt-font">Ó enviame un WhatsApp haciendo <a href="https://api.whatsapp.com/send?phone=529842478721&text=%C2%A1Hola!%20Estoy%20interesado%20en%20tus%20servicios" target="_blank" style="color: #dabd1d;">click aquí</a></p>
                 </div>
             </div>
-            <form class="contact-form" id="contact-form-data">
+            <form class="contact-form">
                 <div class="row pt-3">
                     <!-- Submission Popup -->
                     <div class="col-12">
@@ -970,7 +970,7 @@
                     <!-- Button -->
                     <div class="col-12 px-md-0">
                         <div class="contact-btn pt-5 text-center text-lg-left">
-                            <button type="button" class="btn btn-medium btn-rounded btn-yellow text-capitalize contact_btn">Enviar</button>
+                            <button type="button" class="btn btn-medium btn-rounded btn-yellow text-capitalize" onclick="EnviarCorreo()">Enviar</button>
                         </div>
                     </div>
                 </div>
@@ -1006,3 +1006,31 @@
 <script src="personal-hotspot/js/timeline.js"></script>
 <script src="vendor/js/contact_us.js"></script>
 <script src="personal-hotspot/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+	function EnviarCorreo(){
+		var nombre = $("#first_name").val();
+		var telefono = $("#phone").val();
+		var email = $("#email").val();
+		var mensaje = $("#message").val();
+		//swal.fire(nombre+" "+telefono+" "+email+" "+mensaje);
+		$.ajax(
+			{
+				url:'vendor/contact-mailer.php',
+				type:'POST',
+				data:{
+					n:nombre,
+					t:telefono,
+					e:email,
+					m:mensaje
+				}
+			}
+		).done(function(resp){
+			if(resp>0){
+				Swal.fire("Correo Enviado", "Gracias por contactarme","success");
+			}else{
+				Swal.fire("Mensaje de Error", "No se pudo enviar el correo, intenta más tarde.","error");
+			}
+		})
+	}
+</script>
